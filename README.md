@@ -3,7 +3,7 @@ O banco de redações da UOL (http://educacao.uol.com.br/bancoderedacoes/) é at
 
 Neste repositório todas as redações publicadas até então estão disponível em um arquivo XML, extraído a partir de um programa via requisições HTTP automáticas e interpretação das páginas HTML. Este corpus pode servir como modelo de testes e validação de técnicas de PLN (Processamento de Linguagem Natural) sobre redações.
 
-No processo de extração foram obtidos o texto original, o texto corrigido, o tema, a nota geral, as notas por critério e os erros comentados (expressão errada e versão corrigida pelo avaliador).
+No processo de extração foram obtidos o texto original, o texto corrigido, o tema, a nota final, as notas por critério e, para redações mais recentes, erros gramaticais e ortográficos e a versão corrigida pelo avaliador.
 
 # Critérios de avaliação
 Os critérios de avaliação utilizados pela UOL no seu banco de redações são os mesmos do ENEM:
@@ -36,10 +36,14 @@ Versão de julho/2016 com + 2000 redações.
 # Publicações
 Não tenho conhecimento de alguma publicação científica utilizando esse corpus. Por favor, avise-me se souber de alguma.
 
-# Código fonte do web crawler
-Em breve será postado o programa em Python utilizado para extrair os dados. Este programa pode ser reutilizado para extrair dados das próximas redações. Neste programa também estarão disponíveis métodos para validar modelos criados para atender as tarefas acima.
+# Web crawler
+Na pasta **crawler** está o código fonte do programa em Python usado para extrair os dados do site da UOL.
 
-Também será postado em breve uma baseline em Python para importar todos os dados e realizar algumas análises simples.
+As dependências abaixo são necessárias e podem ser instaladas com o comando *pip*:
+* pyquery
+* html2text
+
+Às vezes o servidor da UOL bloqueia ou demora a responder as requisições HTTP. Nesse caso, eu executei o programa duas ou três vezes, filtrando metade ou um terço das redações (salvando em um arquivo separado e ao final juntando as partes).
 
 # Termos de uso
 Copyright UOL. Todos os direitos reservados. É permitida a reprodução apenas em trabalhos escolares, sem fins comerciais e desde que com o devido crédito ao UOL e aos autores.
