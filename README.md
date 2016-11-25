@@ -27,31 +27,20 @@ Algumas tarefas a serem trabalhadas no corpus:
 # Métricas de validação
 Como métricas de validação sugiro usar Correlação de Pearson e RMSE (Root Mean Squared Error) para as tarefas 1) e 2) e F1 score e Acurácia para a tarefa 3). Avise-me se você souber de critérios melhores ou que podem suplementar os citados na validação dessas tarefas.
 
-# Validação cruzada k-fold
-Dependências:
-* sklearn
-* matplotlib
+# Instalação
+Instale este pacote com o comando pip abaixo:
 
-Em reader/commons.py você encontra o método *kfold_cross_validation* para realizar uma validação cruzada estratificada 10-fold. Isto é, o banco de redações é dividido em 10 partes com cerca de 200 redações cada e são realizadas 10 iterações. Em cada iteração 9 partes são usadas para treino e 1 para teste. Ao final das 10 iterações, todo o banco de redações foi testado de modo que em nenhum momento uma redação apresentada no treino foi reconsiderada no teste.
-
-```python
-from commons import kfold_cross_validation
-kfold_cross_validation(classifier, X, y, plot=True)
 ```
-
-O comando acima aciona os métodos **fit** e **predict** de *classifier*. Estes métodos estão presentes na maioria dos algoritmos de aprendizado automático do pacote *sklearn*. O método acima retorna duas métricas de validação: Correlação de Pearson (r) e RMSE e também exibe esses valores na saída de texto padrão. 
-
-Quando este método é chamado com o parâmetro *plot=True*, é apresentado um gráfico de dispersão das notas calculadas em comparação às notas humanas (*scatter plot*):
-
-![Gráfico de dispersão da baseline](https://github.com/gpassero/uol-redacoes-xml/raw/master/image/baseline_scatter_plot.png)
+    pip install git+https://github.com/gpassero/uol-redacoes-xml.git
+```
 
 # Como carregar as redações
 Em reader/essays.py você encontra um algoritmo para carregar todos os dados do XML em uma estrutura fácil de ser manipulada em Python.
 O comando abaixo mostra como carregar as redações usando o método *load_uol_essays_bank*:
 
 ```python
-from essays import load_uol_essays_bank
-essays = load_uol_essays_bank()
+from uol_redacoes_xml.reader.essays import load_uol_essays_bank
+essays = load_uol_essays_bank(xml_filename='uol_essays_bank.xml.bz2')
 print(len(essays))
 # ~2000
 print(essays[0].text)
@@ -79,6 +68,24 @@ Essa baseline utiliza as seguintes *features*:
 * Número de palavrás únicas (vocabulário)
 * Repetição de palavras (total / vocabulário)
 * Tamanho médio das palavras
+
+# Validação cruzada k-fold
+Dependências:
+* sklearn
+* matplotlib
+
+Em reader/commons.py você encontra o método *kfold_cross_validation* para realizar uma validação cruzada estratificada 10-fold. Isto é, o banco de redações é dividido em 10 partes com cerca de 200 redações cada e são realizadas 10 iterações. Em cada iteração 9 partes são usadas para treino e 1 para teste. Ao final das 10 iterações, todo o banco de redações foi testado de modo que em nenhum momento uma redação apresentada no treino foi reconsiderada no teste.
+
+```python
+from uol_redacoes_xml.reader.commons import kfold_cross_validation
+kfold_cross_validation(classifier, X, y, plot=True)
+```
+
+O comando acima aciona os métodos **fit** e **predict** de *classifier*. Estes métodos estão presentes na maioria dos algoritmos de aprendizado automático do pacote *sklearn*. O método acima retorna duas métricas de validação: Correlação de Pearson (r) e RMSE e também exibe esses valores na saída de texto padrão. 
+
+Quando este método é chamado com o parâmetro *plot=True*, é apresentado um gráfico de dispersão das notas calculadas em comparação às notas humanas (*scatter plot*):
+
+![Gráfico de dispersão da baseline](https://github.com/gpassero/uol-redacoes-xml/raw/master/image/baseline_scatter_plot.png)
 
 # Ranking
 Caso você esteja desenvolvendo programas para avaliação automática de redações o convidamos a compartilhar seus resultados sobre este corpus.
