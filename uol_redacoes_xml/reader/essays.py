@@ -6,7 +6,6 @@ Created on Fri Sep  2 10:34:00 2016
 """
 
 from .commons import xstr, tokenize, get_paragraphs, get_sentences
-import numpy as np
 from bs4 import BeautifulSoup
 from collections import Counter
 from os.path import isfile
@@ -17,9 +16,10 @@ import pickle
 
 class EssayTheme:
 
-    def __init__(self, title, description, url):
+    def __init__(self, title, description, info, url):
         self.title = xstr(title)
         self.description = xstr(description)
+        self.info = xstr(info)
         self.url = xstr(url)
 
     def __repr__(self):
@@ -114,10 +114,13 @@ def load_uol_essays_bank(filter_theme=False, save_dump=True, load_dump=True, xml
         theme_description = s_theme.description.string if s_theme.description is not None else ''
         if theme_description == '':
             warnings.append('Theme without description (but not skipped)')
+        theme_info = s_theme.info.string if s_theme.info is not None else ''
+        if theme_info == '':
+            warnings.append('Theme without description (but not skipped)')
 #        theme_description = re.sub('[#]* Redações corrigidas.*', '', theme_description, flags=re.DOTALL)
 #        theme_description = re.sub('[#]* Observações.*', '', theme_description, flags=re.DOTALL)
         theme_url = s_theme.url.string if s_theme.url is not None else ''
-        theme = EssayTheme(theme_title, theme_description, theme_url)
+        theme = EssayTheme(theme_title, theme_description, theme_info, theme_url)
 
         if filter_theme is not False:
             if filter_theme.lower() not in theme.title.lower():

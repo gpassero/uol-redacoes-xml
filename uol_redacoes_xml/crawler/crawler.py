@@ -17,6 +17,8 @@ CRITERIA_SHORTS = [('domínio da norma culta', 'Ortografia'),
 
 i = 0
 ie = 0
+
+
 def crawl(root, p):
     global i, ie
 
@@ -29,7 +31,7 @@ def crawl(root, p):
 #        if i < 95:
 #            continue
 
-        date, description, essays = p.find_theme_essays(url)
+        date, description, info, essays = p.find_theme_essays(url)
 
         # Parsers v1 must not repeat what parser v2 is able to get
         if p == p1 and date > '2015-07-31':
@@ -40,6 +42,7 @@ def crawl(root, p):
         SubElement(el_theme, "url").text = url
         SubElement(el_theme, "date").text = date
         SubElement(el_theme, "description").text = description
+        SubElement(el_theme, "info").text = info
         el_essays = SubElement(el_theme, "essays")
 
         if description is False:
@@ -51,14 +54,11 @@ def crawl(root, p):
             SubElement(el_essay, "title").text = title
             SubElement(el_essay, "url").text = url
             SubElement(el_essay, "score").text = score
-
             content, comments, criteria = p.get_essay_info(url)
-    #        SubElement(el_essay, "content").text = content
             original, fixed, errors, review = handle_essay_content(content)
             SubElement(el_essay, 'original').text = original
             SubElement(el_essay, 'fixed').text = fixed
             SubElement(el_essay, 'review').text = review
-
             SubElement(el_essay, "comments").text = comments
             el_criteria = SubElement(el_essay, "criteria")
             for description, score in criteria:
@@ -70,12 +70,11 @@ def crawl(root, p):
                         break
 
                 SubElement(el_criterion, 'name').text = criterion_short_name
-    #            SubElement(el_criterion, 'description').text = description
                 SubElement(el_criterion, 'score').text = score
 
         if i % 1 == 0:
             write_to_file(root, 'essays.xml')
-            print(i, ' essays theme and ', ie,' essays written to file.')
+            print(i, ' essays theme and ', ie, ' essays written to file.')
 
         close_conns()
 

@@ -20,12 +20,13 @@ MONTHS = ['', 'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
 # only the latest version is available, so we ignore the older versions.
 LOADED_URLS = []
 
-# These essays have no contet (e.g. http://educacao.uol.com.br/bancoderedacoes/redacoes/militarizacao-problema-ou-solucao.htm)
+# These essays have no content (e.g. http://educacao.uol.com.br/bancoderedacoes/redacoes/militarizacao-problema-ou-solucao.htm)
 # no URL or no criteria score
 BAD_TITLES = ['Militarização: Problema ou Solução?', 'Chegaremos à Rio + 100?',
               '(Sem título 018)', '[Sem titulo]']
 
-def find_themes(host = 'educacao.uol.com.br', page = '/bancoderedacoes/temas.jhtm'):
+def find_themes(host = 'educacao.uol.com.br',
+                page = '/bancoderedacoes/temas.jhtm'):
     html_content = get_web_page_content(host+page)
     d = pq(html_content)
     themes = d('#bancoderedacoes ul li a').map(lambda i, e: (pq(e).text(), pq(e).attr('href')))
@@ -33,10 +34,10 @@ def find_themes(host = 'educacao.uol.com.br', page = '/bancoderedacoes/temas.jht
     global DATES_PER_URL
     DATES_PER_URL = {}
     for name, url in themes:
-        date = re.sub(':.*', '',name)
+        date = re.sub(':.*', '', name)
         if len(date.split(' ')) == 3:
-            month, _, year =  tuple(date.split(' '))
-            date =  '{0}-{1:02d}-01'.format(year, MONTHS.index(month.lower()))
+            month, _, year = tuple(date.split(' '))
+            date = '{0}-{1:02d}-01'.format(year, MONTHS.index(month.lower()))
 
         DATES_PER_URL[url] = date
 
@@ -49,7 +50,7 @@ def find_theme_essays(url):
     global DATES_PER_URL, LOADED_URLS, BAD_TITLES
 
     html_content = get_web_page_content(url)
-    if html_content == False:
+    if html_content is False:
         return False, False
 
     d = pq(html_content)
@@ -72,14 +73,17 @@ def find_theme_essays(url):
                     month = 1
                     year = int(year) + 1
 
-                date =  '{0}-{1:02d}-01'.format(year, month)
-
+                date = '{0}-{1:02d}-01'.format(year, month)
 
     description = d('#bancoderedacoes #conteudo, #texto').html()
     d2 = pq(description)
     d2.remove('.modfoto')
     description = '\n'.join(d2.children('p').map(lambda i, e: pq(e).text()))
     description = re.sub('Observações[\r\n ]Seu texto deve', '', description)
+
+    info = pq(html_content).find('#listabox').html()
+    info = html2text(info)
+    info = re.sub('[# ]+Observações[\r\n]+.*', '', info, flags=re.DOTALL)
 
     essays_list_url = d('a:contains("Leia as redações avaliadas")').attr('href')
     html_content = get_web_page_content(essays_list_url)
@@ -96,7 +100,8 @@ def find_theme_essays(url):
     essays = [(title, url, score) for title, url, score in essays
                                   if url not in LOADED_URLS
                                   and title not in BAD_TITLES]
-    return date, description, essays
+
+    return date, description, info, essays
 
 
 def get_essay_info(url):

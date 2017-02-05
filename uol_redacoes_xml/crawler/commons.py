@@ -5,7 +5,7 @@ Created on Sun Aug 28 23:35:21 2016
 @author: Guilherme Passero <guilherme.passero0@gmail.com>
 """
 
-from http.client import HTTPConnection as httpc
+from http.client import HTTPSConnection as httpc
 from xml.etree.ElementTree import tostring
 from xml.dom import minidom
 from pyquery import PyQuery as pq
@@ -25,7 +25,7 @@ h.body_width = False
 
 def get_conn(host):
     global conn
-    if not host in conn:
+    if not host in conn or conn[host].sock is None:
         conn[host] = httpc(host, timeout=999999)
 
     return conn[host]
@@ -44,16 +44,23 @@ def get_web_page_content(url):
     host, page = re.sub('.*http.?://', '', url).split('/', 1)
 
     if not host: host = 'educacao.uol.com.br'
-
     conn = get_conn(host)
-    conn.request('GET', '/'+page)
-    response = conn.getresponse()
-    if response.status == 200:
-        content = response.read()
-    else:
-        content = False
-        print('Couldn\'t connect to ' + host + '/' + page)
-        print(response.status, response.reason)
+    print('Requesting ' + page, end='')
+    try:
+        conn.request('GET', '/'+page)
+        print(' OK', end='')
+        response = conn.getresponse()
+        print(' OK', end='')
+        if response.status == 200:
+            content = response.read()
+            print(' OK')
+        else:
+            content = False
+            print(' ERROR')
+            print(response.status, response.reason)
+    except:
+        print('Error connecting to ' + page)
+        return ''
 
 #    conn.close()
     return content
@@ -85,7 +92,6 @@ def handle_essay_content(html):
     d.find('.certo, .texto-corrigido').map(lambda i, e: pq(e).text('['+pq(e).text()+']'))
     d.find('.erro, .texto-errado, u').map(lambda i, e: pq(e).text('--'+pq(e).text()+'--'))
     review = h.handle(d.html())
-
     return original, fixed, errors, review
 
 
