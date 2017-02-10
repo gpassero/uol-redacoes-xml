@@ -8,7 +8,7 @@ Created on Fri Sep 23 20:53:56 2016
 from .essays import load_uol_essays_bank
 from .commons import kfold_cross_validation
 import numpy as np
-from sklearn import cross_validation
+from sklearn import model_selection
 from sklearn.linear_model import LinearRegression
 
 def extract_features(essays):
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     X, X_legend = extract_features(essays)
     y = extract_targets(essays)['Nota final']
 
-    X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.1, random_state=0)
+    X_train, X_test, y_train, y_test = model_selection.train_test_split(X, y, test_size=0.1, random_state=0)
 
     regressor = LinearRegression(n_jobs=-1)
     regressor.fit(X_train, y_train)

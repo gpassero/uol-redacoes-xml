@@ -7,7 +7,7 @@ Created on Fri Sep 23 20:21:16 2016
 
 import nltk
 from nltk.tokenize import word_tokenize
-from sklearn import cross_validation
+from sklearn import model_selection
 from scipy.stats import pearsonr
 from matplotlib import pyplot as plt
 from math import sqrt
@@ -64,5 +64,5 @@ def eval_regression(gold_values, sys_values, model_name='', plot=False):
 
 
 def kfold_cross_validation(clf, X, y, n_sets=10, model_name='', plot=False):
-    y_predicted = cross_validation.cross_val_predict(clf, X, y, cv=n_sets)
+    y_predicted = model_selection.cross_val_predict(clf, X, y, cv=n_sets)
     return eval_regression(y, y_predicted, model_name=model_name, plot=plot)
