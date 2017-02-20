@@ -22,7 +22,8 @@ Algumas tarefas a serem trabalhadas no corpus:
 1. Avaliação automática de redações conforme um dos critérios do ENEM (computar uma nota válida de 0 a 2 por critério);
 2. Avaliação automática da qualidade geral de redações (computar uma nota válida de 0 a 10);
 3. Detecção de erros ortográficos (comparação com erros detectados pelo avaliador);
-4. Geração de feedback sobre a escrita (os comentários do avaliador podem auxiliar nessa tarefa).
+4. Detecção de fuga ao tema;
+5. Geração de feedback sobre a escrita (os comentários do avaliador podem auxiliar nessa tarefa).
 
 # Métricas de validação
 Como métricas de validação sugiro usar Correlação de Pearson e RMSE (Root Mean Squared Error) para as tarefas 1) e 2) e F1 score e Acurácia para a tarefa 3). Avise-me se você souber de critérios melhores ou que podem suplementar os citados na validação dessas tarefas.
@@ -96,10 +97,12 @@ Caso você esteja desenvolvendo programas para avaliação automática de redaç
     Baseline    0.42      2.04
 
 # Versão
-Versão de agosto/2016 com + 2000 redações.
+Versão de janeiro/2017 com + 2000 redações e + 100 propostas temáticas.
 
 # Publicações
-Não tenho conhecimento de alguma publicação científica utilizando esse corpus. Por favor, avise-me se souber de alguma.
+[[2013] Bazelato, Bruno S. e Amorim, Evelin. C. F. A Bayesian Classifier to Automatic Correction of Portuguese Essays.](http://www.tise.cl/volumen9/TISE2013/779-782.pdf)
+
+Não encontrei mais publicações científicas utilizando esse corpus. Por favor, avise-me se souber de alguma.
 
 # Web crawler
 Na pasta **crawler** está disponível o código fonte do programa em Python usado para extrair os dados do site da UOL.
