@@ -100,7 +100,11 @@ Caso você esteja desenvolvendo programas para avaliação automática de redaç
 Versão de janeiro/2017 com + 2000 redações e + 100 propostas temáticas.
 
 # Publicações
-[[2013] Bazelato, Bruno S. e Amorim, Evelin. C. F. A Bayesian Classifier to Automatic Correction of Portuguese Essays.](http://www.tise.cl/volumen9/TISE2013/779-782.pdf)
+As publicações científicas abaixo tratam sobre a avaliação automática de redações e fazem uso do banco de redações da UOL (não necessariamente usando este *web crawler*):
+
+[[2013] Bruno S. Bazelato e Evelin C. F. Amorim. A Bayesian Classifier to Automatic Correction of Portuguese Essays.](http://www.tise.cl/volumen9/TISE2013/779-782.pdf)
+
+[[2016] Jário José Santos, Ranilson Paiva, Ig Ibert Bittencourt. Lexical-Syntactic Evaluation of written activities based on Genetic Algorithm and Natural Language Processing: An experiment on ENEM.](http://www.br-ie.org/pub/index.php/rbie/article/view/6450)
 
 Não encontrei mais publicações científicas utilizando esse corpus. Por favor, avise-me se souber de alguma.
 
