@@ -28,8 +28,6 @@ def crawl(root, p):
 
         i = i + 1
         print(i, name)
-#        if i < 95:
-#            continue
 
         date, description, info, essays = p.find_theme_essays(url)
 
@@ -60,6 +58,11 @@ def crawl(root, p):
             SubElement(el_essay, 'fixed').text = fixed
             SubElement(el_essay, 'review').text = review
             SubElement(el_essay, "comments").text = comments
+            el_errors = SubElement(el_essay, 'errors')
+            for wrong, right in errors:
+                el_error = SubElement(el_errors, 'error')
+                SubElement(el_error, 'wrong').text = wrong
+                SubElement(el_error, 'right').text = right
             el_criteria = SubElement(el_essay, "criteria")
             for description, score in criteria:
                 el_criterion = SubElement(el_criteria, 'criterion')

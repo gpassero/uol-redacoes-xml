@@ -90,7 +90,8 @@ def handle_essay_content(html):
     d = pq(html)
     d.remove('h1, h2, h3, h4')
     d.find('.certo, .texto-corrigido').map(lambda i, e: pq(e).text('['+pq(e).text()+']'))
-    d.find('.erro, .texto-errado, u').map(lambda i, e: pq(e).text('--'+pq(e).text()+'--'))
+    d.find('u').map(lambda i, e: pq(e).text('#-'+pq(e).text()+'-#'))
+    d.find('.erro, .texto-errado, u').map(lambda i, e: pq(e).text('*-'+pq(e).text()+'-*'))
     review = h.handle(d.html())
     return original, fixed, errors, review
 
