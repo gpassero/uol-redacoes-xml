@@ -5,13 +5,19 @@ Created on Fri Sep  2 10:34:00 2016
 @author: Guilherme Passero <guilherme.passero0@gmail.com>
 """
 
-from .commons import xstr, tokenize, get_paragraphs, get_sentences
-from bs4 import BeautifulSoup
+import bz2
+import logging
+import os
+import pickle
+import re
 from collections import Counter
 from os.path import isfile
-import re
-import bz2
-import pickle
+
+from bs4 import BeautifulSoup
+
+from .commons import get_paragraphs, get_sentences, tokenize, xstr
+
+LOGGER = logging.getLogger(__name__)
 
 
 class EssayTheme:
@@ -56,14 +62,14 @@ class Essay:
                     'word_length_avg': len(self.text) / len(self.words)
                   }
 
-        print('Extracted features from essay "' + self.title + '"\n')
-        print('-'*20)
-        print(self.text)
-        print('-'*20)
-        print('Score: {0}'.format(self.final_score))
-        print('Features: ')
+        LOGGER.info('Extracted features from essay "' + self.title + '"\n')
+        LOGGER.info('-'*20)
+        LOGGER.info(self.text)
+        LOGGER.info('-'*20)
+        LOGGER.info('Score: {0}'.format(self.final_score))
+        LOGGER.info('Features: ')
         for key in self.features:
-            print(key + ': ' + str(self.features[key]))
+            LOGGER.info(key + ': ' + str(self.features[key]))
 
 
     def get_features(self, features_name=None):
@@ -86,13 +92,14 @@ class Essay:
 
 NO_SCORE_WARNING = 'No score defined for essay {0}, ' + \
                    'using the sum of criteria ({1})'
-BANK_XML_FILENAME = 'uol_essays_bank.xml.bz2'
-BANK_DUMP_FILENAME = 'uol_essays_bank.pickle'
+BANK_XML_FILENAME = os.path.join(os.path.dirname(__file__), 'uol_essays_bank.xml.bz2')
+BANK_DUMP_FILENAME = os.path.join(os.path.dirname(__file__), 'uol_essays_bank.pickle')
 
-def load_uol_essays_bank(filter_theme=False, save_dump=True, load_dump=True, xml_filename=BANK_XML_FILENAME, dump_filename=BANK_DUMP_FILENAME):
+def load_uol_essays_bank(filter_theme=False, save_dump=True, load_dump=True, xml_filename=BANK_XML_FILENAME,
+                         dump_filename=BANK_DUMP_FILENAME):
 
     if load_dump and (isfile(BANK_DUMP_FILENAME) or isfile(dump_filename)):
-        print('Loading UOL essays bank from ' + dump_filename)
+        LOGGER.debug('Loading UOL essays bank from ' + dump_filename)
         essays = pickle.load(open(dump_filename, 'rb'))
         return essays
 
@@ -162,9 +169,9 @@ def load_uol_essays_bank(filter_theme=False, save_dump=True, load_dump=True, xml
                 continue
 
             if final_score == -1:
-                print(NO_SCORE_WARNING.format(i, criteria_score_sum))
-                print(essay.title.string)
-                print(essay.url.string)
+                LOGGER.warn(NO_SCORE_WARNING.format(i, criteria_score_sum))
+                LOGGER.warn(essay.title.string)
+                LOGGER.warn(essay.url.string)
                 final_score = criteria_score_sum
 
             if criteria_score_sum != final_score:
@@ -186,21 +193,21 @@ def load_uol_essays_bank(filter_theme=False, save_dump=True, load_dump=True, xml
                                 errors))
 
             if i % 100 == 0:
-                print(str(i) + ' essays read...')
+                LOGGER.info(str(i) + ' essays read...')
 
     warnings = Counter(warnings)
 
     if len(warnings) > 0:
         warnings_count = 0
-        print('Warnings: ')
+        LOGGER.warn('UOL essays load warnings: ')
         WARNING_TEMPLATE = '{0}  ->  {1}'
         for warning, count in warnings.items():
-            print(WARNING_TEMPLATE.format(warning, count))
+            LOGGER.warn(WARNING_TEMPLATE.format(warning, count))
             warnings_count += count
 
-        print('Total warnings: {0}'.format(warnings_count))
+        LOGGER.warn('Total warnings: {0}'.format(warnings_count))
 
-    print('Total essays loaded: {0}'.format(len(essays)))
+    LOGGER.info('Total essays loaded: {0}'.format(len(essays)))
 
     if save_dump:
         pickle.dump(essays, open(dump_filename, 'wb'))
