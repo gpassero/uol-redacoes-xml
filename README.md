@@ -41,11 +41,13 @@ O comando abaixo mostra como carregar as redações usando o método *load_uol_e
 
 ```python
 from uol_redacoes_xml.reader.essays import load_uol_essays_bank
-essays = load_uol_essays_bank(xml_filename='uol_essays_bank.xml.bz2')
+essays = load_uol_essays_bank()
 print(len(essays))
 # ~2000
 print(essays[0].text)
 # texto original da primeira redação
+print([attr for attr in essays[0].__dir__() if not attr.startswith('_')])
+# exibe os atributos do objeto de redação (exceto os privados, que começam com '_')
 ```
 
 # Baseline
@@ -54,7 +56,7 @@ Dependências:
 * matplotlib
 * scipy
 
-Em reader/baseline.py são carregadas *features* simples e é utilizada Regressão Linear para prever a nota final das redações. Você pode usar esse código para estudar o carregamento e aplicação de features e eventualmente estender essa baseline para atingir melhores resultados. Atualmente os resultados dessa baseline são:
+Em reader/baseline.py são carregadas *features* simples e é utilizada Regressão Linear para prever a nota final das redações. Você pode usar esse código para estudar o carregamento e aplicação de features e eventualmente estender essa baseline para atingir melhores resultados. Atualmente os resultados dessa baseline para a nota final são:
 
     Modelo      Pearson	  RMSE              
     Baseline    0.42      2.04
@@ -116,6 +118,13 @@ As dependências abaixo são necessárias para executá-lo e podem ser instalada
 * html2text
 
 Às vezes o servidor da UOL bloqueia ou demora a responder as requisições HTTP. Nesse caso, eu executei o programa duas ou três vezes, filtrando metade ou um terço das redações (salvando em um arquivo separado e ao final juntando as partes).
+
+# Problemas conhecidos (TODO)
+- Algumas redações estão com anotações do avaliador entre colchetes (ex. "porem [porém]") devido a uma exceção não tratada no web crawler
+- As notas foram definidas no XML com critérios demasiadamente resumidos ("Adequação ao tema", "Ortografia"), pretendo alterá-las para o número da competência avalida ("Competência N").
+- No caso das redações que estão presentes tanto no site novo (https://educacao.uol.com.br/bancoderedacoes/) quanto no antigo (https://educacao.uol.com.br/bancoderedacoes/temas.jhtm), o web crawler considerou apenas a no site novo, no entanto a data de publicação do tema gravada no XML fica incorreta
+- Substituir "Theme" por "Prompt"
+- Revisar o nome do pacote (usar underline no lugar do hifen traduzir para o inglês, como todo o resto da biblioteca)
 
 # Termos de uso
 Copyright UOL. Todos os direitos reservados. É permitida a reprodução apenas em trabalhos escolares, sem fins comerciais e desde que com o devido crédito ao UOL e aos autores.
