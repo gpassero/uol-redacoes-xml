@@ -13,11 +13,12 @@ LOGGER = logging.getLogger(__name__)
 
 class Prompt:
 
-    def __init__(self, title, description, info, url):
+    def __init__(self, title, description, info, url, date):
         self.title = xstr(title)
         self.description = xstr(description)
         self.info = xstr(info)
         self.url = xstr(url)
+        self.date = xstr(date)
 
     def __repr__(self):
         return self.title + '\n' + self.url

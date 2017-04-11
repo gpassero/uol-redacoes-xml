@@ -52,7 +52,8 @@ def load(filter_prompt=None, save_dump=True, load_dump=True, xml_filename=XML_FI
         if prompt_info == '':
             warnings.append('Prompt without description (but not skipped)')
         prompt_url = s_prompt.url.string if s_prompt.url is not None else ''
-        prompt = Prompt(prompt_title, prompt_description, prompt_info, prompt_url)
+        prompt_date = s_prompt.date.string if s_prompt.date is not None else ''
+        prompt = Prompt(prompt_title, prompt_description, prompt_info, prompt_url, prompt_date)
 
         if filter_prompt is not None:
             if filter_prompt.lower() not in prompt.title.lower():
