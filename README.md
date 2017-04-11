@@ -99,7 +99,7 @@ Caso você esteja desenvolvendo programas para avaliação automática de redaç
     Baseline    0.42      2.04
 
 # Versão
-Versão de janeiro/2017 com + 2000 redações e + 100 propostas temáticas.
+Versão de março/2017 com + 2100 redações e 111 propostas temáticas.
 
 # Publicações
 As publicações científicas abaixo tratam sobre a avaliação automática de redações e fazem uso do banco de redações da UOL (não necessariamente usando este *web crawler*):
