@@ -80,6 +80,9 @@ def handle_essay_content(html):
 
     d.remove('h1, h2, h3, h4')
     original = h.handle(d.remove('.certo, .texto-corrigido').html())
+    # Remove suggestions that were not put inside "span.text-corrigido"
+    original = re.sub(r' \[(.*?)\]([.?!,])', r'\2', original)
+    original = re.sub(r'\[(.*?)\][ ]?', '', original)
 
     d = pq(html)
     d.remove('h1, h2, h3, h4')

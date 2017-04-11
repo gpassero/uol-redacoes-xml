@@ -4,16 +4,27 @@ Created on Thu Sep 22 22:54:52 2016
 
 @author: Guilherme Passero <guilherme.passero0@gmail.com>
 """
-from commons import handle_essay_content, write_to_file, close_conns
-import parser_v1 as p1
-import parser_v2 as p2
+from uol_redacoes_xml.crawler.commons import handle_essay_content, write_to_file, close_conns
+import uol_redacoes_xml.crawler.parser_v1 as p1
+import uol_redacoes_xml.crawler.parser_v2 as p2
 from xml.etree.ElementTree import Element, SubElement
 
-CRITERIA_SHORTS = [('domínio da norma culta', 'Ortografia'),
-                   ('compreender a proposta da redação', 'Adequação ao tema'),
-                   ('organizar e interpretar informações', 'Coerência'),
-                   ('conhecimento dos mecanismos ling', 'Coesão'),
-                   ('respeito aos valores humanos', 'Ética')]
+CRITERIA_SHORTS = [('domínio da norma culta', 'Competência 1'),
+                   ('domínio norma culta', 'Competência 1'),
+                   ('compreender a proposta da redação', 'Competência 2'),
+                   ('organizar e interpretar informações', 'Competência 3'),
+                   ('conhecimento dos mecanismos ling', 'Competência 4'),
+                   ('respeito aos valores humanos', 'Competência 5')]
+
+# For essays that are present in both new and old versions, only from the new version the extraction will occur
+# This is a fix for the prompt dates, since the published date are all the same for prompts in both new and old site
+PROMPT_FIXED_DATES = {}
+PROMPT_BASE_URL = 'https://educacao.uol.com.br/bancoderedacoes/propostas/'
+PROMPT_FIXED_DATES['bandido-bom-e-bandido-morto.htm'] = '2015-11-01'
+PROMPT_FIXED_DATES['o-sucesso-vem-da-escola-ou-do-esforco-individual.htm'] = '2015-10-01'
+PROMPT_FIXED_DATES['disciplina-ordem-e-autoridade-favorecem-a-educacao.htm'] = '2015-09-01'
+PROMPT_FIXED_DATES['forma-fisica-corpo-perfeito-e-consumismo.htm'] = '2015-08-01'
+PROMPT_FIXED_DATES['intolerancia-religiosa-regra-ou-excecao-no-brasil.jhtm'] = '2015-07-01'
 
 i = 0
 ie = 0
@@ -22,26 +33,29 @@ ie = 0
 def crawl(root, p):
     global i, ie
 
-    themes = p.find_themes()
+    prompts = p.find_prompts()
 
-    for name, url in themes:
+    for name, url in prompts:
 
         i = i + 1
         print(i, name)
 
-        date, description, info, essays = p.find_theme_essays(url)
+        date, description, info, essays = p.find_prompt_essays(url)
 
         # Parsers v1 must not repeat what parser v2 is able to get
         if p == p1 and date > '2015-07-31':
             continue
 
-        el_theme = SubElement(root, "theme")
-        SubElement(el_theme, "name").text = name
-        SubElement(el_theme, "url").text = url
-        SubElement(el_theme, "date").text = date
-        SubElement(el_theme, "description").text = description
-        SubElement(el_theme, "info").text = info
-        el_essays = SubElement(el_theme, "essays")
+        el_prompt = SubElement(root, "prompt")
+        SubElement(el_prompt, "name").text = name
+        SubElement(el_prompt, "url").text = url
+        page = url.replace(PROMPT_BASE_URL, '')
+        if page in PROMPT_FIXED_DATES:
+            date = PROMPT_FIXED_DATES[page]
+        SubElement(el_prompt, "date").text = date
+        SubElement(el_prompt, "description").text = description
+        SubElement(el_prompt, "info").text = info
+        el_essays = SubElement(el_prompt, "essays")
 
         if description is False:
             continue
@@ -77,12 +91,12 @@ def crawl(root, p):
 
         if i % 1 == 0:
             write_to_file(root, 'essays.xml')
-            print(i, ' essays theme and ', ie, ' essays written to file.')
+            print(i, ' essays prompt and ', ie, ' essays written to file.')
 
         close_conns()
 
 
-root = Element('themes')
+root = Element('prompts')
 
 crawl(root, p2)
 crawl(root, p1)

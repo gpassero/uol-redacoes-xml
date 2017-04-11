@@ -25,15 +25,15 @@ LOADED_URLS = []
 BAD_TITLES = ['Militarização: Problema ou Solução?', 'Chegaremos à Rio + 100?',
               '(Sem título 018)', '[Sem titulo]']
 
-def find_themes(host = 'educacao.uol.com.br',
+def find_prompts(host = 'educacao.uol.com.br',
                 page = '/bancoderedacoes/temas.jhtm'):
     html_content = get_web_page_content(host+page)
     d = pq(html_content)
-    themes = d('#bancoderedacoes ul li a').map(lambda i, e: (pq(e).text(), pq(e).attr('href')))
+    prompts = d('#bancoderedacoes ul li a').map(lambda i, e: (pq(e).text(), pq(e).attr('href')))
 
     global DATES_PER_URL
     DATES_PER_URL = {}
-    for name, url in themes:
+    for name, url in prompts:
         date = re.sub(':.*', '', name)
         if len(date.split(' ')) == 3:
             month, _, year = tuple(date.split(' '))
@@ -41,12 +41,12 @@ def find_themes(host = 'educacao.uol.com.br',
 
         DATES_PER_URL[url] = date
 
-    themes = [(re.sub('^.*\d\d: ', '', name), url) for name, url in themes]
-    themes = [(re.sub('^: ', '', name), url) for name, url in themes]
-    return themes
+    prompts = [(re.sub('^.*\d\d: ', '', name), url) for name, url in prompts]
+    prompts = [(re.sub('^: ', '', name), url) for name, url in prompts]
+    return prompts
 
 
-def find_theme_essays(url):
+def find_prompt_essays(url):
     global DATES_PER_URL, LOADED_URLS, BAD_TITLES
 
     html_content = get_web_page_content(url)

@@ -14,16 +14,16 @@ from pyquery import PyQuery as pq
 import re
 
 
-def find_themes(host = 'educacao.uol.com.br', page = '/bancoderedacoes/'):
+def find_prompts(host = 'educacao.uol.com.br', page = '/bancoderedacoes/'):
     html_content = get_web_page_content(host+page)
     d = pq(html_content)
-    themes = d('#conteudo-principal h1 a').map(lambda i, e: (pq(e).text(), pq(e).attr('href')))
-    themes = [(re.sub(' REDAÇÕES CORRIGIDAS', '', name), url)
-              for name, url in themes]
-    return themes
+    prompts = d('#conteudo-principal h1 a').map(lambda i, e: (pq(e).text(), pq(e).attr('href')))
+    prompts = [(re.sub(' REDAÇÕES CORRIGIDAS', '', name), url)
+              for name, url in prompts]
+    return prompts
 
 
-def find_theme_essays(url):
+def find_prompt_essays(url):
     html_content = get_web_page_content(url)
     d = pq(html_content)
     date = d('#conteudo-principal .info-header time').attr('datetime')

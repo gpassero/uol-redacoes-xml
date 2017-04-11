@@ -1,5 +1,5 @@
 # UOL Redações em XML
-O banco de redações da UOL (http://educacao.uol.com.br/bancoderedacoes/) é atualizado mensalmente com 20 redações. Estas redações são avaliadas por um especialista conforme os critérios do ENEM e visam auxiliar estudantes a melhorar sua escrita. 
+O banco de redações da UOL (http://educacao.uol.com.br/bancoderedacoes/) é atualizado mensalmente com 20 redações. Estas redações são avaliadas por um especialista conforme os critérios do ENEM e visam auxiliar estudantes a melhorar sua escrita.
 
 Neste repositório todas as redações publicadas até então estão disponível em um arquivo XML, extraído a partir de um programa via requisições HTTP automáticas e interpretação das páginas HTML. Este corpus pode servir como modelo de testes e validação de técnicas de PLN (Processamento de Linguagem Natural) sobre redações.
 
@@ -8,11 +8,11 @@ No processo de extração foram obtidos o texto original, o texto corrigido, o t
 # Critérios de avaliação
 Os critérios de avaliação utilizados pela UOL no seu banco de redações são os mesmos do ENEM:
 
-1. Demonstrar domínio da modalidade escrita formal da língua portuguesa (aspectos gramaticais e ortográficos);
-2. Compreender a proposta de redação e aplicar conceitos das várias áreas de conhecimento para desenvolver o tema, dentro dos limites estruturais do texto dissertativo-argumentativo em prosa (adequação ao tema);
-3. Selecionar, relacionar, organizar e interpretar informações, fatos, opiniões e argumentos em defesa de um ponto de vista (coerência);
-4. Demonstrar conhecimento dos mecanismos linguísticos necessários para a argumentação (coesão);
-5. Elaborar proposta de intervenção para o problema abordado, respeitando os direitos humanos (moral e ética).
+1. Demonstrar domínio da modalidade escrita formal da língua portuguesa;
+2. Compreender a proposta de redação e aplicar conceitos das várias áreas de conhecimento para desenvolver o tema, dentro dos limites estruturais do texto dissertativo-argumentativo em prosa;
+3. Selecionar, relacionar, organizar e interpretar informações, fatos, opiniões e argumentos em defesa de um ponto de vista;
+4. Demonstrar conhecimento dos mecanismos linguísticos necessários para a argumentação;
+5. Elaborar proposta de intervenção para o problema abordado, respeitando os direitos humanos.
 
 Neste corpus a cada critério foi atribuída uma nota de 0 a 2 por um especialista da UOL. Somando-se a nota de cada critério obtém-se a nota final (entre 0 e 10).
 
@@ -40,8 +40,8 @@ Em reader/essays.py você encontra um algoritmo para carregar todos os dados do 
 O comando abaixo mostra como carregar as redações usando o método *load_uol_essays_bank*:
 
 ```python
-from uol_redacoes_xml.reader.essays import load_uol_essays_bank
-essays = load_uol_essays_bank()
+import uol_redacoes_xml
+essays = uol_redacoes_xml.load()
 print(len(essays))
 # ~2000
 print(essays[0].text)
@@ -58,7 +58,7 @@ Dependências:
 
 Em reader/baseline.py são carregadas *features* simples e é utilizada Regressão Linear para prever a nota final das redações. Você pode usar esse código para estudar o carregamento e aplicação de features e eventualmente estender essa baseline para atingir melhores resultados. Atualmente os resultados dessa baseline para a nota final são:
 
-    Modelo      Pearson	  RMSE              
+    Modelo      Pearson	  RMSE
     Baseline    0.42      2.04
 
 Um algoritmo com performance similar à humana precisa atingir ao menos Pearson > 0.8 e RMSE < 0.5 (sugestão, pois não existe consenso sobre esses números).
@@ -84,7 +84,7 @@ from uol_redacoes_xml.reader.commons import kfold_cross_validation
 kfold_cross_validation(classifier, X, y, plot=True)
 ```
 
-O comando acima aciona os métodos **fit** e **predict** de *classifier*. Estes métodos estão presentes na maioria dos algoritmos de aprendizado automático do pacote *sklearn*. O método acima retorna duas métricas de validação: Correlação de Pearson (r) e RMSE e também exibe esses valores na saída de texto padrão. 
+O comando acima aciona os métodos **fit** e **predict** de *classifier*. Estes métodos estão presentes na maioria dos algoritmos de aprendizado automático do pacote *sklearn*. O método acima retorna duas métricas de validação: Correlação de Pearson (r) e RMSE e também exibe esses valores na saída de texto padrão.
 
 Quando este método é chamado com o parâmetro *plot=True*, é apresentado um gráfico de dispersão das notas calculadas em comparação às notas humanas (*scatter plot*):
 
@@ -95,7 +95,7 @@ Caso você esteja desenvolvendo programas para avaliação automática de redaç
 
 ## Nota final
 
-    Modelo      Pearson	  RMSE              
+    Modelo      Pearson	  RMSE
     Baseline    0.42      2.04
 
 # Versão
@@ -120,11 +120,12 @@ As dependências abaixo são necessárias para executá-lo e podem ser instalada
 Às vezes o servidor da UOL bloqueia ou demora a responder as requisições HTTP. Nesse caso, eu executei o programa duas ou três vezes, filtrando metade ou um terço das redações (salvando em um arquivo separado e ao final juntando as partes).
 
 # Problemas conhecidos (TODO)
-- Algumas redações estão com anotações do avaliador entre colchetes (ex. "porem [porém]") devido a uma exceção não tratada no web crawler
-- As notas foram definidas no XML com critérios demasiadamente resumidos ("Adequação ao tema", "Ortografia"), pretendo alterá-las para o número da competência avalida ("Competência N").
-- No caso das redações que estão presentes tanto no site novo (https://educacao.uol.com.br/bancoderedacoes/) quanto no antigo (https://educacao.uol.com.br/bancoderedacoes/temas.jhtm), o web crawler considerou apenas a no site novo, no entanto a data de publicação do tema gravada no XML fica incorreta
-- Substituir "Theme" por "Prompt"
+- ~~Algumas redações estão com anotações do avaliador entre colchetes (ex. "porem [porém]") devido a uma exceção não tratada no web crawler~~ (resolvido em 11/04/2017)
+- ~~As notas foram definidas no XML com critérios demasiadamente resumidos ("Adequação ao tema", "Ortografia"), pretendo alterá-las para o número da competência avalida ("Competência N").~~ (resolvido em 11/04/2017)
+- ~~No caso das redações que estão presentes tanto no site novo (https://educacao.uol.com.br/bancoderedacoes/) quanto no antigo (https://educacao.uol.com.br/bancoderedacoes/temas.jhtm), o web crawler considerou apenas a no site novo, no entanto a data de publicação do tema gravada no XML fica incorreta~~ (resolvido em 11/04/2017)
+- ~~Substituir "Theme" por "Prompt"~~(resolvido em 11/04/2017)
 - Revisar o nome do pacote (usar underline no lugar do hifen traduzir para o inglês, como todo o resto da biblioteca)
+- Alguns erros anotados nas redações não foram sublinhados e estão sendo ignorados pelo web crawler, com isso a versão corrigida das redações está incorreta em alguns casos - a regra atual é substituir palavras sublinhadas pela próxima tag 'span.text-corrigido'
 
 # Termos de uso
 Copyright UOL. Todos os direitos reservados. É permitida a reprodução apenas em trabalhos escolares, sem fins comerciais e desde que com o devido crédito ao UOL e aos autores.
