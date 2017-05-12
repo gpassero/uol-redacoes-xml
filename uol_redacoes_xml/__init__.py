@@ -18,8 +18,8 @@ from uol_redacoes_xml.reader.essays import Essay, Prompt
 
 LOGGER = logging.getLogger(__name__)
 
-XML_FILENAME = os.path.join(os.path.dirname(__file__), '../essays.xml.bz2')
-DUMP_FILENAME = os.path.join(os.path.dirname(__file__), '../essays.pickle')
+XML_FILENAME = os.path.join(os.path.dirname(__file__), 'essays.xml.bz2')
+DUMP_FILENAME = os.path.join(os.path.dirname(__file__), 'essays.pickle')
 NO_SCORE_WARNING = 'No final score defined for essay {0}, using the sum of criteria ({1})'
 WARNING_TEMPLATE = '{0}  ->  {1}'
 
