@@ -127,5 +127,8 @@ As dependências abaixo são necessárias para executá-lo e podem ser instalada
 - Revisar o nome do pacote (usar underline no lugar do hifen traduzir para o inglês, como todo o resto da biblioteca)
 - Alguns erros anotados nas redações não foram sublinhados e estão sendo ignorados pelo web crawler, com isso a versão corrigida das redações está incorreta em alguns casos - a regra atual é substituir palavras sublinhadas pela próxima tag 'span.text-corrigido'
 
+# Redações do Portal Brasil Escola
+[Clique aqui](brasilescola/README.md) para mais informações sobre o crawler para o portal Brasil Escola.
+
 # Termos de uso
 Copyright UOL. Todos os direitos reservados. É permitida a reprodução apenas em trabalhos escolares, sem fins comerciais e desde que com o devido crédito ao UOL e aos autores.
