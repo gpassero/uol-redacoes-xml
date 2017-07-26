@@ -106,7 +106,10 @@ As publicações científicas abaixo tratam sobre a avaliação automática de r
 
 [[2013] Bruno S. Bazelato e Evelin C. F. Amorim. A Bayesian Classifier to Automatic Correction of Portuguese Essays.](http://www.tise.cl/volumen9/TISE2013/779-782.pdf)
 
-[[2016] Jário José Santos, Ranilson Paiva, Ig Ibert Bittencourt. Lexical-Syntactic Evaluation of written activities based on Genetic Algorithm and Natural Language Processing: An experiment on ENEM.](http://www.br-ie.org/pub/index.php/rbie/article/view/6450)
+[[2016] Jário José Santos, Ranilson Paiva e Ig Ibert Bittencourt. Lexical-Syntactic Evaluation of written activities based on Genetic Algorithm and Natural Language Processing: An experiment on ENEM.](http://www.br-ie.org/pub/index.php/rbie/article/view/6450)
+
+[[2017] Evelin C. F. de Amorim e Adriano Veloso. A Multi-aspect Analysis of Automatic Essay Scoring for Brazilian
+Portuguese.](https://www.aclweb.org/anthology/E/E17/E17-4010.pdf)
 
 Não encontrei mais publicações científicas utilizando esse corpus. Por favor, avise-me se souber de alguma.
 
