@@ -122,12 +122,7 @@ As dependências abaixo são necessárias para executá-lo e podem ser instalada
 
 Às vezes o servidor da UOL bloqueia ou demora a responder as requisições HTTP. Nesse caso, eu executei o programa duas ou três vezes, filtrando metade ou um terço das redações (salvando em um arquivo separado e ao final juntando as partes).
 
-# Problemas conhecidos (TODO)
-- ~~Algumas redações estão com anotações do avaliador entre colchetes (ex. "porem [porém]") devido a uma exceção não tratada no web crawler~~ (resolvido em 11/04/2017)
-- ~~As notas foram definidas no XML com critérios demasiadamente resumidos ("Adequação ao tema", "Ortografia"), pretendo alterá-las para o número da competência avalida ("Competência N").~~ (resolvido em 11/04/2017)
-- ~~No caso das redações que estão presentes tanto no site novo (https://educacao.uol.com.br/bancoderedacoes/) quanto no antigo (https://educacao.uol.com.br/bancoderedacoes/temas.jhtm), o web crawler considerou apenas a no site novo, no entanto a data de publicação do tema gravada no XML fica incorreta~~ (resolvido em 11/04/2017)
-- ~~Substituir "Theme" por "Prompt"~~(resolvido em 11/04/2017)
-- Revisar o nome do pacote (usar underline no lugar do hifen traduzir para o inglês, como todo o resto da biblioteca)
+# Problemas conhecidos
 - Alguns erros anotados nas redações não foram sublinhados e estão sendo ignorados pelo web crawler, com isso a versão corrigida das redações está incorreta em alguns casos - a regra atual é substituir palavras sublinhadas pela próxima tag 'span.text-corrigido'
 
 # Redações do Portal Brasil Escola
